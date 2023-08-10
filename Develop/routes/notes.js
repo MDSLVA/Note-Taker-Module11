@@ -1,38 +1,32 @@
 const express = require('express');
-const fs = require('fs').promises;
-const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-
 const router = express.Router();
-const dbFilePath = path.join(__dirname, '..', 'db', 'db.json');
+const uuid = require('uuid');
 
-router.get('/notes', async (req, res) => {
-  try {
-    const data = await fs.readFile(dbFilePath, 'utf8');
-    const notes = JSON.parse(data);
-    res.json(notes);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+const notes = [];
+
+router.get('/notes', (req, res) => {
+  res.json(notes);
 });
 
-router.post('/notes', async (req, res) => {
-  try {
-    const newNote = req.body;
+router.post('/notes', (req, res) => {
+  const { title, content } = req.body;
+  const newNote = {
+    id: uuid.v4(),
+    title,
+    content,
+  };
+  notes.push(newNote);
+  res.status(201).json(newNote);
+});
 
-    const data = await fs.readFile(dbFilePath, 'utf8');
-    const notes = JSON.parse(data);
-
-    newNote.id = uuidv4();
-    notes.push(newNote);
-
-    await fs.writeFile(dbFilePath, JSON.stringify(notes));
-    
-    res.json(newNote);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+router.delete('/notes/:id', (req, res) => {
+  const { id } = req.params;
+  const index = notes.findIndex(note => note.id === id);
+  if (index !== -1) {
+    notes.splice(index, 1);
+    res.sendStatus(204);
+  } else {
+    res.status(404).json({ message: 'Note not found' });
   }
 });
 
