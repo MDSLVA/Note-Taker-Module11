@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 
-// Define routes for your index here, if needed
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+router.get('/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/notes.html'));
+});
 
 module.exports = router;

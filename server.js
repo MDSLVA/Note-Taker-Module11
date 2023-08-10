@@ -15,5 +15,3 @@ app.use('/', indexRoutes);
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
-
-
