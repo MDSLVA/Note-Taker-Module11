@@ -6,8 +6,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 
-const notesRoutes = require('./Develop/routes/notes');
-const indexRoutes = require('./Develop/routes/index');
+const notesRoutes = require('./routes/notes');
+const indexRoutes = require('./routes/index');
 
 app.use('/api', notesRoutes);
 app.use('/', indexRoutes);
