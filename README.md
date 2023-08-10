@@ -1,4 +1,4 @@
-# Note Take (Module11)
+# Note Taker (Module11)
 
 ## Description 
 
